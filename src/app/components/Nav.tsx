@@ -42,6 +42,7 @@ const Nav: React.FC<SearchComponentProps> = () => {
 
   return (
     <div className="flex justify-center items-center w-full">
+      <button>코드리뷰테스트</button>
       <nav
         className={`w-[100%] h-[65px] relative 
         `}
