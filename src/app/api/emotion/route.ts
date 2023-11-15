@@ -4,7 +4,7 @@ import { verifyJwt } from '@/app/lib/jwt';
 
 
 type reqBody = {
-    text: string;
+    text: string[];
 }
 type resBody = {
     result: string;

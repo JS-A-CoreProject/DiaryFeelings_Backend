@@ -21,7 +21,7 @@ export const POST = async(req: Request) => {
         const res = await axios.post(`${process.env.MODEL_URL}/advice/`,{
             text: body.text
         });
-        const result: resBody = res.data
+        const result = res.data
         return NextResponse.json(result.result)
     } catch (err) {
         console.log(err)

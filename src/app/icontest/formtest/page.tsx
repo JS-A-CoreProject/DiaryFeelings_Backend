@@ -3,83 +3,89 @@
 import React, { useState, useRef } from 'react'
 import Image from 'next/image'
 import axios from 'axios'
-
+// 이미지 여러 개 올리기 하자...
 const page = () => {
-    const imgRef = useRef<HTMLInputElement>(null);
-    const [imgUrl, setImgUrl] = useState<string>("");
+  const [images, setImages] = useState<File[]>([]);
+  const [previews, setPreviews] = useState<string[]>([]);
+  const imgRef = useRef<HTMLInputElement>(null);
 
-    const send = async(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        e.preventDefault();
-        if (
-          imgRef.current &&
-          imgRef.current.files &&
-          imgRef.current.files.length > 0
-        ) {
-          const formData = new FormData();
-          formData.append("file", imgRef.current.files[0]);
-          formData.append("title", "title");
-          const result = await axios.post(
-            "/api/diary",
-            formData,
-            {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
-            }
-          );
-          console.log(result);
-          //보내고 나면 리셋
-          imgReset();
-        }
+  const handleImageView = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newImages = [...images];
+    const newPreviews = [...previews];
+    for (let i=0; i < e.target.files!.length; i++) {
+      if (newImages.length < 3) {
+        const file = e.target.files![i];
+        newImages.push(file)
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          newPreviews.push(e.target!.result as string);
+          setPreviews(newPreviews);
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+    setImages(newImages);
+  };
+
+  const handleDeletePreview = (index: number) => {
+    const newImages = [...images];
+    const newPreviews = [...previews];
+    newImages.splice(index, 1);
+    newPreviews.splice(index, 1);
+    setImages(newImages);
+    setPreviews(newPreviews);
+  };
+
+  const send = async() => {
+    const formData = new FormData();
+    images.forEach((img) => {
+      if( img instanceof File && img.size > 0) {
+        formData.append('img', img)
       };
-    const imgReset = () => {
-        if (imgRef.current) {
-          imgRef.current.value = "";
-          URL.revokeObjectURL(imgUrl);
-          setImgUrl((_pre) => "");
+    });
+    const result = await axios.put(
+      '/api/diary',
+      formData,
+      {
+        headers: {
+          'Content-Type':'multipart/form-data'
         }
-      };
-      return (
-        <div>
-          <form>
-            <label>file</label>
-            <input
-              type="file"
-              name="cardImg"
-              ref={imgRef}
-              id="card-img--input"
-              onChange={(e: React.ChangeEvent<{ files: FileList | null }>) => {
-                if (e.target.files && e.target.files.length > 0) {
-                  const file = e.target.files[0];
-                  URL.revokeObjectURL(imgUrl);
-                  setImgUrl((_pre) => URL.createObjectURL(file));
-                }
-              }}
-            ></input>
+      }
+    );
+    console.log(result);
+  };
+  return (
+    <div>
+      {
+        previews?.map((prev, index) =>(
+          <div key={index}>
+            <Image
+              src={prev}
+              width={200}
+              height={300}
+              alt={`${prev}-${index}`}
+            />
             <button
-              type="button"
-              onClick={imgReset}
+              onClick={() => handleDeletePreview(index)}
             >
-              삭제하기
+              X
             </button>
-          </form>
-          {imgUrl && (
-            <>
-              <div>
-                <Image
-                  src={imgUrl}
-                  alt="preview"
-                  width={200}
-                  height={300}
-                />
-              </div>
-              <button onClick={(e) => send(e)}>
-                submit
-              </button>
-            </>
-          )}
-        </div>
-      );
+          </div>
+        ))
+      }
+      <input
+        ref={imgRef}
+        type='file'
+        multiple
+        accept='image/*'
+        className='border'
+        onChange={(e) => handleImageView(e)}
+      />
+      <button onClick={send}>
+        gogo
+      </button>
+    </div>
+  );
 }
 
 export default page
