@@ -27,19 +27,21 @@ const ModalCalendar: React.FC<{ isOpen: boolean; closeModal: () => void }> = ({
   ]
   const router = useRouter()
 
-  const dayClick = (
-    value: Date,
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => {
-    console.log(moment(value).format('YYYY-MM-DD'))
+  const dayClick = (value: Date, event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const formattedDate = moment(value).format('YYYY-MM-DD');
+    router.push(`/write?date=${formattedDate}`);
+    closeModal(); // 이동 후 모달을 닫습니다.
   }
+
 
   const handleMarking = (date: Date, view: any) => {
     const imagesByDate: { [key: string]: string } = {
-      '2023-11-15': './kkomul.png',
+      '2023-11-15': './happy.png',
       '2023-11-16': './angry.png',
       '2023-11-17': './depress.png',
       '2023-11-25': './sad.png',
+      '2023-12-18': './sad.png',
+      '2024-01-03': './sad.png',
       // 필요에 따라 더 많은 날짜-이미지 매핑 추가
     }
 
@@ -61,10 +63,13 @@ const ModalCalendar: React.FC<{ isOpen: boolean; closeModal: () => void }> = ({
     return <div className="dot-img">{html}</div>
   }
   const handleImageClick = (date: string) => {
-    router.push(`/write?date=${date}`)
-    closeModal()
+    // 만약 오늘 날짜라면 write 페이지로 이동
+    if (date === moment().format('YYYY-MM-DD')) {
+      router.push(`/write?date=${date}`)
+     
+    }
+    // 오늘 날짜가 아니라면 추가적인 처리가 필요하다면 여기에 추가
   }
-
   return (
     <Modal
       isOpen={isOpen}
