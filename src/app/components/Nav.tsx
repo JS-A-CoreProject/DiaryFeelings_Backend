@@ -6,10 +6,12 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import MypageModal from './MypageModal'
+import ModalCalendar from './Calendar';
 
 interface SearchComponentProps {
   className?: string
 }
+
 
 const Nav: React.FC<SearchComponentProps> = () => {
   const { data: session } = useSession()
@@ -18,12 +20,28 @@ const Nav: React.FC<SearchComponentProps> = () => {
   const { systemTheme, theme, setTheme } = useTheme() // 다크모드테마 설정
   const currentTheme = theme === 'system' ? systemTheme : theme
   const [inputValue, setInputValue] = useState('') // 일기검색
+  const [isCalendarModalOpen, setIsCalendarModalOpen] = useState(false);//달력모달
+
 
   // 로그인후 사용자 아이콘 클릭시 모달생성
   const handleButtonClick = () => {
     setIsModalOpen(!isModalOpen)
     // console.log('isModalOpen', isModalOpen)
   }
+
+
+  //Calendar 모달
+
+  const openCalendarModal = () => {
+    setIsCalendarModalOpen(true);
+  };
+
+  const closeCalendarModal = () => {
+    setIsCalendarModalOpen(false);
+  };
+
+
+
 
   useEffect(() => {
     // 초기 렌더링 시 테마를 라이트 모드로 설정
@@ -77,6 +95,7 @@ const Nav: React.FC<SearchComponentProps> = () => {
           ) : (
             // 로그인 성공시 마이페이지 아이콘 생성
             <>
+
               <button
                 className="w-10 h-10 right-[1.5rem] top-[14.5px] absolute border rounded-full hover:bg-slate-100 dark:border-slate-400 dark:hover:bg-slate-600"
                 onClick={handleButtonClick}
@@ -117,17 +136,30 @@ const Nav: React.FC<SearchComponentProps> = () => {
 
           {isLogin ? (
             <>
-              <Link
-                href="/write"
-                className="absolute right-[11rem] top-[22px] "
-              >
-                <span className="text-slate-500 hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100">
-                  일기쓰기
-                </span>
-              </Link>
+              {/* 일기쓰기 링크 */}
+              <div className="absolute right-[12.5rem] top-[22px]">
+                <Link href="/write">
+                  <span className="text-slate-500 hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100">
+                    일기쓰기
+                  </span>
+                </Link>
+              </div>
+
+              {/* 달력 버튼 */}
+              {/* 달력 버튼 */}
+              <div className="absolute right-[9.8rem] top-[22px]">
+                <button onClick={openCalendarModal} className="text-slate-500 hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100">
+                  달력
+                </button>
+              </div>
+
+              {/* 모달 렌더링 */}
+              {isCalendarModalOpen && (
+                <ModalCalendar isOpen={isCalendarModalOpen} closeModal={closeCalendarModal} />
+              )}
               <Link
                 href="/diary"
-                className="absolute right-[16.5rem] top-[22px] "
+                className="absolute right-[17rem] top-[22px] "
               >
                 <span className="text-slate-500 hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100">
                   기록
