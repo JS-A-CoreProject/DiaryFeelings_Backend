@@ -60,13 +60,16 @@ const ModalCalendar = ({ isOpen, closeModal }: any) => {
     value: Date,
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
-    e.stopPropagation()
-    const formattedDate = moment(value).format('YYYY-MM-DD')
-    const destinationUrl = getDestinationUrl(formattedDate)
-    router.push(destinationUrl)
-
-    // 페이지 이동 후에 달력을 닫도록 onChange 함수 호출
-    onChange(null) // 또는 다른 원하는 값으로 초기화
+    e.stopPropagation();
+    const formattedDate = moment(value).format('YYYY-MM-DD');
+    const destinationUrl = getDestinationUrl(formattedDate);
+    router.push(destinationUrl);
+  
+    // Call closeModal to close the modal calendar
+    closeModal();
+  
+    // Optionally, you can still reset the calendar's value state if needed
+    onChange(null); // or any other value you want to reset to
   }
 
   const handleMarking = (
