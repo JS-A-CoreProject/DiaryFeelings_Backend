@@ -1,7 +1,9 @@
 import { useState } from "react";
+import Link from 'next/link';
+import { useRouter } from 'next/navigation'
 
 const NotLoginMain = () => {
-    const [hover, setHover] = useState<string | null>(null);
+    const [hover, setHover] = useState<string | null>('first'); // 초기값 설정
     const [lastHoveredImage, setLastHoveredImage] = useState<string | null>(null);
 
     const handleMouseOver = (image: string) => {
@@ -10,13 +12,21 @@ const NotLoginMain = () => {
     };
 
     const handleMouseOut = () => {
-       
+
     };
 
     const renderImage = (imageSource: string) => {
         return (
-            <div className="w-[1400px] h-[300px] border border-[tomato] mt-[50px]">
-                <img src={imageSource} alt="Descriptive Text of Image" className="w-full h-auto object-contain" />
+            <div className="w-[1200px] h-[680px] mt-[5px] mb-[10px] flex justify-center ">
+                <Link href="/login">
+                  
+                        <img
+                            src={imageSource}
+                            alt="Descriptive Text of Image"
+                            className="object-contain transition-opacity duration-500"
+                        />
+                   
+                </Link>
             </div>
         );
     };
@@ -30,19 +40,23 @@ const NotLoginMain = () => {
         <div className="w-full flex flex-col justify-center items-center pt-[150px] pb-[150px]">
             <div className="flex flex-col justify-center items-center">
                 <span className="text-[60px] font-bold">
-                    하루를 기록하는 일기
+                    감정을 기록하는 일기
                 </span>
-                <span className="text-lg">
+                <span className="text-lg mb-[50px]" >
                     당신의 감정을 기록하고, 되돌아 보세요.
                 </span>
-                <span className="mt-[50px] text-[30px] px-[24px] py-[12px] border rounded-md text-white bg-[#b2a4d4] cursor-pointer">
-                    내 감정을 기록하기
-                </span>
+                <Link href="/login">
+                   
+                        <span className="mt-[100px] text-[30px] px-[24px] py-[12px] border rounded-md text-white bg-[#b2a4d4] cursor-pointer">
+                            내 감정을 기록하기
+                        </span>
+                    
+                </Link>
             </div>
 
             <div className="flex flex-col w-full justify-center items-center mt-[100px]">
                 <div className="border w-[1200px] h-[300px] overflow-hidden">
-                    <img src="/ddiary.png" alt="Descriptive Text of Image" className="w-full h-auto object-cover object-center" />
+                    <img src="/ddiary.png" alt="Descriptive Text of Image" className="w-full h-auto object-contain object-center" />
                 </div>
 
                 <div className="flex justify-center items-center w-full">
@@ -54,7 +68,7 @@ const NotLoginMain = () => {
                         >
                             <div className="flex justify-center items-center mb-[15px]">
                                 <div className="w-[25px] h-[25px] border rounded-md bg-[#b2a4d4]"></div>
-                                <span className="text-[20px] ml-[10px] font-bold">일기 작성하기</span>
+                                <span className="text-[20px] ml-[10px] font-bold">읽기 작성</span>
                             </div>
                         </div>
                     </div>
@@ -100,16 +114,21 @@ const NotLoginMain = () => {
                 </div>
 
                 {/* 페이지 이용 방법 이미지 Section */}
-                {shouldRenderImage('first') && renderImage("/cat.jpg")}
-                {shouldRenderImage('second') && renderImage("/catcatcat.png")}
+                {shouldRenderImage('first') && renderImage("/write.png")}
+                {shouldRenderImage('second') && renderImage("/한마디.png")}
                 {shouldRenderImage('third') && renderImage("/달력.png")}
-                {shouldRenderImage('fourth') && renderImage("/cat1.png")}
+                {shouldRenderImage('fourth') && renderImage("/감정그래프.png")}
 
                 {/* 나머지 컴포넌트 부분 */}
-                <div className="w-full flex justify-center items-center mt-[800px]">
-                    <span className="mt-[50px] text-[30px] px-[24px] py-[12px] border rounded-md text-white bg-[#b2a4d4] cursor-pointer" style={{ marginTop: '100px' }}>
+                <div className="w-full flex justify-center items-center mt-[10px]">
+                    {/* 로그인 페이지로 이동하는 Link */}
+                    <Link href="/api/auth/signin">
+
+                    <span className="mt-[0px] text-[30px] px-[24px] py-[12px] border rounded-md text-white bg-[#b2a4d4] cursor-pointer" style={{ marginTop: '100px' }}>
                         감정을 기록하러 가볼까요?
                     </span>
+                        
+                    </Link>
                 </div>
             </div>
         </div>
