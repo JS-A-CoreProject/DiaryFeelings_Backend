@@ -6,37 +6,9 @@
 }
 
 
-/* 달력 기본 스타일 */
-.react-calendar {
-  width: 80%; /* 너비를 %로 조정 */
-  max-width: 550px; /* 최대 너비 설정 */
-  border-radius: 20px;
-  border: 3px solid #afa4ce;
-  margin: 70vh auto 0; /* 상단 마진을 뷰포트 높이의 %로 조정 */
-  height: auto;
-  overflow-y: hidden;
-  position: relative;
-  
-}
 
 
-/* 달력 내부 스타일 */
-.react-calendar__month-view {
-  min-height: 420px !important; /* 내부 높이를 자동으로 조절 */
-  display: flex;
-  flex-direction: column;
-  margin: auto; /* 수평 중앙 정렬 */ 
-  max-height: 520px; /* 부모 요소의 높이를 따르도록 설정 */ 
-  position: relative; /* 추가: 상대 위치 설정 */
-  overflow-y: auto;
-}
 
-/* 달력 내부 스타일 */
-.react-calendar__month-view__days {
-  margin-top: 10px;
-  height:450px;
-  
-}
 
 
 /* 오버레이 스타일 */
@@ -47,18 +19,18 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(
-    0,
-    0,
-    0,
-    0.3
-  ); /* 검정색 오버레이 색상 및 투명도 조절 */
+  background-color: rgba(0, 0, 0, 0.3 ); /* 검정색 오버레이 색상 및 투명도 조절 */
   z-index: -1; /* 달력 아래로 배치 */
 }
 
 .calendar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90vh; /* 컨테이너의 높이를 뷰포트의 90%로 설정 */
   position: relative;
 }
+
 
 .close-button {
   position: absolute;
@@ -76,13 +48,7 @@
     width: 70%; /* 태블릿에서의 너비 */
   }
 }
-  .react-calendar__navigation {
-    background-color: #e6e6fa;
-    border-bottom: 4px solid #afa4ce;
-    height: 100px !important; /* 크기를 고정합니다. */
-    border-radius: 17px 17px 0 0;
-    overflow: hidden;
-  }
+
 
   .react-calendar__navigation span {
     font-size: 32px;
@@ -99,25 +65,6 @@
   .react-calendar {
     width: 60%; /* 데스크톱에서의 너비 */
   }
-}
-
-
-/* 다크 모드 스타일 */
-@media (prefers-color-scheme: dark) {
-  .react-calendar {
-    background-color: #333; /* 어두운 배경색 */
-    color: white; /* 흰색 글자 */
-  }
-
-  .react-calendar__navigation {
-    background-color: #444; /* 네비게이션 배경색 변경 */
-  }
-  .react-calendar__tile {
-    background-color: #555; /* 타일 배경색 변경 */
-    color: white; /* 타일 글자색 변경 */
-  }
-
-
 }
 
 
@@ -143,22 +90,21 @@
   font-size: 30px;
 }
 
-/* <> 글자 마우스 올렸을 때 색상 */
-.react-calendar__navigation button:enabled:hover,
-.react-calendar__navigation button:enabled:focus {
-  color: red;
-}
-
-
 
 .react-calendar__tile {
   width: 40px; /* 날짜별 칸의 너비를 조절합니다. */
   height: 100px !important; /* 날짜별 칸의 높이를 조절합니다. */
   font-size: 16px; /* 날짜의 글꼴 크기를 조절합니다. */
-  margin-top: 10px;
+  margin-top: 10px !important;
   margin-right: 8px; /* 날짜 칸 간격 늘림 */
-
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
 }
+
 
 /* 날짜 색상 및 크기 */
 .react-calendar__month-view abbr {
@@ -231,26 +177,6 @@
   text-decoration: none;
 }
 
-/* 날짜별 칸 스타일 */
-.react-calendar__tile {
-  text-align: center;
-  height: 87px; /* 수정된 부분: 날짜별 칸의 높이를 조절합니다. */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-  margin-top: 10px !important; /* 수정된 부분: 날짜 간의 간격을 조절합니다. */
-  
-}
-
-/* 날짜 클릭했을 때 칸 색상 */
-.react-calendar__tile:enabled:hover,
-.react-calendar__tile:enabled:focus,
-.react-calendar__tile--active {
-  background-color: rgba(215, 175, 211, 0.3);
-  border-radius: 14px;
-}
 
 .react-calendar__tile--active,
 .react-calendar__tile--now {
@@ -278,10 +204,6 @@
   background: none !important;
 }
 
-.react-calendar__navigation__label {
-  font-size: 24px;
-  font-weight: 600;
-}
 
 .dot-img {
   width: 100%;
@@ -317,18 +239,182 @@
   pointer-events: auto; /* 클릭 이벤트 활성화 */
 }
 
-.calendar-container {
-  position: relative; /* 컨테이너 위치 설정 */
-}
 
 
-
-
-/* 추가된 부분: 정중앙 위치를 위한 스타일 */
-.calendar-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 90vh; /* 컨테이너의 높이를 뷰포트의 90%로 설정 */
+/* 라이트 모드일 때*/
+html.light .react-calendar {
+  width: 80%; /* 너비를 %로 조정 */
+  max-width: 550px; /* 최대 너비 설정 */
+  border-radius: 20px;
+  border: 3px solid #afa4ce;
+  margin: 80vh auto 0; /* 상단 마진을 뷰포트 높이의 %로 조정 */
+  height: auto; /* 높이를 자동으로 설정 */
+  overflow-y: hidden;
   position: relative;
 }
+
+html.light  .react-calendar__navigation {
+  background-color: #e6e6fa;
+  border-bottom: 4px solid #afa4ce;
+  height: 100px !important; /* 크기를 고정합니다. */
+  border-radius: 17px 17px 0 0;
+  overflow: hidden;
+}
+
+html.light  .react-calendar__month-view {
+  min-height: 320px !important; /* 내부 높이 줄임 */
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  max-height: 520px; /* 부모 요소의 높이를 따르도록 설정 */
+  position: relative;
+  overflow-y: auto; 
+}
+html.light  .react-calendar__tile {
+  width: 40px; /* 날짜별 칸의 너비를 조절합니다. */
+  height: 100px !important; /* 날짜별 칸의 높이를 조절합니다. */
+  font-size: 16px; /* 날짜의 글꼴 크기를 조절합니다. */
+  margin-top: 10px !important;
+  margin-right: 8px; /* 날짜 칸 간격 늘림 */
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+html.light .react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus,
+.react-calendar__tile--active {
+  background-color: rgba(215, 175, 211, 0.3);
+  border-radius: 14px;
+}
+
+html.light .react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus {
+  color: red;
+}
+
+html.light .react-calendar__navigation__label {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+
+
+
+
+
+/* 다크 모드일 때 */
+html.dark .react-calendar {
+  width: 80%; /* 너비를 %로 조정 */
+  max-width: 550px; /* 최대 너비 설정 */
+  border-radius: 20px;
+  border: 3px solid #afa4ce;
+  margin: 80vh auto 0; /* 상단 마진을 뷰포트 높이의 %로 조정 */
+  height: auto; /* 높이를 자동으로 설정 */
+  overflow-y: hidden;
+  position: relative;
+}
+
+html.dark  .react-calendar__navigation {
+  background-color: #e6e6fa;
+  border-bottom: 4px solid #afa4ce;
+  height: 100px !important; /* 크기를 고정합니다. */
+  border-radius: 17px 17px 0 0;
+  overflow: hidden;
+}
+
+html.dark   .react-calendar__month-view {
+  min-height: 320px !important; /* 내부 높이 줄임 */
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  max-height: 520px; /* 부모 요소의 높이를 따르도록 설정 */
+
+  position: relative;
+  overflow-y: auto; 
+}
+
+html.dark  .react-calendar__tile {
+  width: 40px; /* 날짜별 칸의 너비를 조절합니다. */
+  height: 100px !important; /* 날짜별 칸의 높이를 조절합니다. */
+  font-size: 16px; /* 날짜의 글꼴 크기를 조절합니다. */
+  margin-top: 10px !important;
+  margin-right: 8px; /* 날짜 칸 간격 늘림 */
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  background-color: #333;
+  
+}
+
+html.dark .react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus,
+.react-calendar__tile--active {
+  background-color: rgba(4, 3, 4, 0.3);
+  border-radius: 14px;
+}
+
+html.dark .react-calendar__tile--active,
+.react-calendar__tile--now {
+  pointer-events: auto; /* 클릭 이벤트 비활성화 */
+  background-color:  rgba(4, 3, 4, 0.3);/* RGB에 투명도 추가 */
+  border-radius: 14px;
+  height: 87px;
+}
+
+/* html.dark .react-calendar__month-view__weekdays abbr {
+  color: white; /* 다크 모드 요일 글자색 */
+
+
+
+
+html.dark .react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus {
+  color: red;
+}
+
+
+html.dark .react-calendar__navigation__label {
+  font-size: 24px;
+  font-weight: 600;
+  background-color: #333;
+
+}
+
+html.dark .react-calendar__navigation__arrow .react-calendar__navigation__next-button{
+  background-color: #333;
+}
+
+
+/* 달력 내부 스타일 */
+html.dark .react-calendar__month-view__days {
+  margin-top: 10px;
+  height:450px;
+  background-color: #333;
+}
+
+html.dark .react-calendar__navigation__prev2-button {
+  display: none;
+  background-color: #333;
+}
+  
+  
+html.dark .react-calendar__navigation__next-button {
+  background: none;
+  background-color: #333;
+}
+  
+  
+html.dark .react-calendar__navigation__next2-button {
+  display: none;
+  background-color: #333;
+}
+  
+  
+  
